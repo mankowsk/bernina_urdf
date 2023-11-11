@@ -1,1 +1,0 @@
-from .bernina_urdf import models
