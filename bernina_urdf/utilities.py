@@ -1,61 +1,105 @@
-# better: put everything in instance of simulation class or visualization class
+from swift import Swift
+import numpy as np
+
 class Joint():
     def __init__(
         self,
         name = None,
-        parent = None,
-        number = None,
+        sim = None,
+        jindex = None,
     ):
         self.name = name
-        self.number = number
+        self.sim = sim
+        self.jindex = jindex
         
     def mv(self, value, duration=10):
-        q1 = rob.q
-        q2 = q1.copy()
-        q2[number] = value
-        self.parent.move_joints(q1,q2,duration)
+        j1 = self.sim.robot.q.copy()
+        j1[self.jindex] = value
+        self.sim.move(j1,duration=duration)
 
     def mvr(self, value, duration=10):
-        q1 = rob.q
-        q2 = q1.copy()
-        q2[number] += value
-        self.parent.move_joints(q1,q2,duration)
+        j1 = self.sim.robot.q.copy()
+        j1[self.jindex] += value
+        self.sim.move(j1,duration=duration)
 
-def motion_simulation(Obj):
-    # add motion simulation methods
+class Motion_Visualization():
+    def __init__(
+        self,
+        vis = None,
+        robot = None,
+        links = None,
+        camera_views = None,
+    ):
+        self.vis = vis if (vis != None) else Swift()
+        self.robot = robot
+        self.camera_views = camera_views
 
-    def show(self):
-        self.sim.launch(realtime=True)
-        self.add_self_to_sim()
+        if links is not None:
+            for link in links:
+                if link.hasdynamics:
+                    self.__dict__[link.name] = Joint(link.name, self, link.jindex)
 
-        
-    def add_self_to_sim(self):
-        if not self in self.sim.swift_objects:
-            self._swift_id = self.sim.add(self)
+    def _add_self_to_vis(self):
+        if not self.robot in self.vis.swift_objects:
+            self._swift_id = self.vis.add(self.robot)
+    
+    def _ensure_vis_running(self):
+        if not hasattr(self.vis, "server"):
+            self.show()
+    
+    def show(self, camera_view=0, *args, **kwargs):
+        if hasattr(self.vis, "server"):
+            self.vis.reset()
+        else:
+            self.vis.launch(realtime=True, *args, **kwargs)
+        self._add_self_to_vis()
+        if self.camera_views is not None:
+            self.vis.set_camera_pose(*self.camera_views[camera_view])
 
-    def remove_self_from_sim(self):
+    def remove_self_from_vis(self):
         pass
 
-    def move_joints(self, j1, j2, duration=10):
-        self.add_self_to_sim()
+    def move(self, j1, j0 = None, duration=10, init = True):
         """
-        j1: starting joint positions in rad
-        j2: end joint positions in rad
-        Visualizes motion of the robot in the Swift instance sim from j1 to j2 in <duration> seconds. 
-        The device has to be added to sim before the motion is initialized
+        j1: end joint positions in rad.
+        j0: start joint positions, defaults to the current simulation joint positions.
+        duration: time of the simulation in s.
+        Visualizes motion of the robot in the Swift instance sim from j0 to j1 in <duration> seconds. 
         """
-        j1 = j1
-        j2 = j2
-        self.q = j1 #Start position
-        self.sim.step(0) #Initialize visualization
-        self.qd = (j2-j1)/duration #Set speed
+        self._ensure_vis_running()
+        self._add_self_to_vis()
+        if j0 is None:
+            j0 = self.robot.q #Start position
+        if init:
+            self.vis.step(0) #Initialize visualization
+        j0, j1 = np.asarray(j0), np.asarray(j1)
+        self.robot.qd = (j1-j0)/duration #Set joint velocities
         for n in range(int(1/0.05*duration)):
-            self.sim.step(0.05)
+            self.vis.step(0.05)
+
+    def move_trajectory(self, js=[], duration=10, init = True, start_at_current_value = False):
+        """
+        js: joint positions in rad along the path. 
+        j0: start joint positions, defaults to the current simulation joint positions.
+        duration: time of the simulation in s.
+        Visualizes motion of the robot in the Swift instance sim from j0 along js in <duration> seconds. 
+        """
+        self._ensure_vis_running()
+        self._add_self_to_vis()
+        js = np.asarray(js)
+        if start_at_current_value:
+            js = np.vstack([self.robot.q, js]) #Start position
         
-    Obj.show = show    
-    Obj.move_joints = move_joints
-    Obj.add_self_to_sim = add_self_to_sim
-    #for link in list(Obj.links):
-    #    if link.hasdynamics:
-    #        Obj.__dict__[link.name] = Joint(link.name, self, link.number)
-    return Obj
+        if init:
+            self.vis.step(0) #Initialize visualization
+        
+        duration_section = duration / (len(js)-1)
+        if duration_section < 0.05:
+            duration_section = 0.05
+
+        js_rs = np.hstack([js[:-1], js[1:]]).reshape((int(js.shape[0]-1/2),2,js.shape[1]))
+        for j0, j1 in js_rs:
+            self.move(j1, j0, duration=duration_section, init = False)
+
+    
+    

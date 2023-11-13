@@ -1,20 +1,18 @@
 from roboticstoolbox import Robot
-from swift import Swift
-from .utilities import motion_simulation
+from .utilities import Motion_Visualization
 from pathlib import Path
 basepath = Path(__file__).parent
 
-@motion_simulation
 class Tx200_Ceiling(Robot):
     def __init__(
         self, 
-        sim=None,
-    ):
-        self.sim = sim if (sim != None) else Swift()
+        vis=None,
+        ):
+
         links, name, urdf_string, urdf_filepath = self.URDF_read(
             basepath.joinpath("tx200_ceiling.urdf"),
             tld = basepath.as_posix(),
-        )
+            )
 
         super().__init__(
             links,
@@ -22,16 +20,26 @@ class Tx200_Ceiling(Robot):
             manufacturer="Staeubli",
             urdf_string=urdf_string,
             urdf_filepath=None,
-        )
+            )
         
+        self.sim = Motion_Visualization(
+            vis = vis,
+            robot = self,
+            camera_views = [
+                [[3.000,0,1.500], [0,0,1.500]],
+            ],
+            links = self.links
+            )
 
-@motion_simulation
 class Tx200_Floor(Robot):
-    def __init__(self):
+    def __init__(
+            self,
+            vis=None,
+            ):
         links, name, urdf_string, urdf_filepath = self.URDF_read(
             basepath.joinpath("tx200_floor.urdf"),
             tld = basepath.as_posix(),
-        )
+            )
                 
         super().__init__(
             links,
@@ -39,5 +47,8 @@ class Tx200_Floor(Robot):
             manufacturer="Staeubli",
             urdf_string=urdf_string,
             urdf_filepath=urdf_filepath,
-        )
-      
+            )
+        self.sim = Motion_Visualization(
+            vis = vis,
+            robot = self,
+            )
