@@ -12,15 +12,15 @@ class Joint():
         self.sim = sim
         self.jindex = jindex
         
-    def mv(self, value, duration=10, degree=True):
-        j1 = self.sim.robot.q.copy()
+    def mv(self, value, duration=10):
+        j1 = self.sim.pos.copy()
         j1[self.jindex] = value
-        self.sim.move(j1,duration=duration, degree=degree)
+        self.sim.move(j1,duration=duration)
 
-    def mvr(self, value, duration=10, degree=True):
-        j1 = self.sim.robot.q.copy()
+    def mvr(self, value, duration=10):
+        j1 = self.sim.pos.copy()
         j1[self.jindex] += value
-        self.sim.move(j1,duration=duration, degree=degree)
+        self.sim.move(j1,duration=duration)
 
 class Motion_Visualization():
     def __init__(
@@ -38,6 +38,19 @@ class Motion_Visualization():
             for link in links:
                 if link.hasdynamics:
                     self.__dict__[link.name] = Joint(link.name, self, link.jindex)
+    @property
+    def pos(self):
+        return self.robot.todegrees(self.robot.q)
+    @pos.setter
+    def pos(self, value):
+        self.robot.q = self.robot.toradians(value)
+
+    @property
+    def velocity(self):
+        return self.robot.todegrees(self.robot.qd)
+    @velocity.setter
+    def velocity(self, value):
+        self.robot.qd = self.robot.toradians(value)
 
     def _add_self_to_vis(self):
         if not self.robot in self.vis.swift_objects:
@@ -59,7 +72,7 @@ class Motion_Visualization():
     def remove_self_from_vis(self):
         pass
 
-    def move(self, j1, j0 = None, duration=10, init = True, degree=True):
+    def move(self, j1, j0 = None, duration=10, init = True):
         """
         j1: end joint positions.
         j0: start joint positions, defaults to the current simulation joint positions.
@@ -68,18 +81,17 @@ class Motion_Visualization():
         """
         self._ensure_vis_running()
         self._add_self_to_vis()
-        if degree:
-            j1, j0 = np.deg2rad(j1), np.deg2rad(j0)
+
         if j0 is None:
-            j0 = self.robot.q #Start position
+            j0 = self.pos #Start position
         if init:
             self.vis.step(0) #Initialize visualization
         j0, j1 = np.asarray(j0), np.asarray(j1)
-        self.robot.qd = (j1-j0)/duration #Set joint velocities
+        self.velocity = (j1-j0)/duration #Set joint velocities
         for n in range(int(1/0.05*duration)):
             self.vis.step(0.05)
 
-    def move_trajectory(self, js=[], duration=10, init = True, start_at_current_value = False, degree=True):
+    def move_trajectory(self, js=[], duration=10, init = True, start_at_current_value = False):
         """
         js: joint positions in rad along the path. 
         j0: start joint positions, defaults to the current simulation joint positions.
@@ -90,7 +102,7 @@ class Motion_Visualization():
         self._add_self_to_vis()
         js = np.asarray(js)
         if start_at_current_value:
-            js = np.vstack([self.robot.q, js]) #Start position
+            js = np.vstack([self.pos, js]) #Start position
         
         if init:
             self.vis.step(0) #Initialize visualization
@@ -101,7 +113,7 @@ class Motion_Visualization():
 
         js_rs = np.hstack([js[:-1], js[1:]]).reshape((int(js.shape[0]-1/2),2,js.shape[1]))
         for j0, j1 in js_rs:
-            self.move(j1, j0, duration=duration_section, init = False, degree=degree)
+            self.move(j1, j0, duration=duration_section, init = False)
 
     
     
