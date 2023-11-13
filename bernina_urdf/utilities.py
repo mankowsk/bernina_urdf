@@ -12,15 +12,15 @@ class Joint():
         self.sim = sim
         self.jindex = jindex
         
-    def mv(self, value, duration=10):
+    def mv(self, value, duration=10, degree=True):
         j1 = self.sim.robot.q.copy()
         j1[self.jindex] = value
-        self.sim.move(j1,duration=duration)
+        self.sim.move(j1,duration=duration, degree=degree)
 
-    def mvr(self, value, duration=10):
+    def mvr(self, value, duration=10, degree=True):
         j1 = self.sim.robot.q.copy()
         j1[self.jindex] += value
-        self.sim.move(j1,duration=duration)
+        self.sim.move(j1,duration=duration, degree=degree)
 
 class Motion_Visualization():
     def __init__(
@@ -59,15 +59,17 @@ class Motion_Visualization():
     def remove_self_from_vis(self):
         pass
 
-    def move(self, j1, j0 = None, duration=10, init = True):
+    def move(self, j1, j0 = None, duration=10, init = True, degree=True):
         """
-        j1: end joint positions in rad.
+        j1: end joint positions.
         j0: start joint positions, defaults to the current simulation joint positions.
         duration: time of the simulation in s.
         Visualizes motion of the robot in the Swift instance sim from j0 to j1 in <duration> seconds. 
         """
         self._ensure_vis_running()
         self._add_self_to_vis()
+        if degree:
+            j1, j0 = np.deg2rad(j1), np.deg2rad(j0)
         if j0 is None:
             j0 = self.robot.q #Start position
         if init:
@@ -77,7 +79,7 @@ class Motion_Visualization():
         for n in range(int(1/0.05*duration)):
             self.vis.step(0.05)
 
-    def move_trajectory(self, js=[], duration=10, init = True, start_at_current_value = False):
+    def move_trajectory(self, js=[], duration=10, init = True, start_at_current_value = False, degree=True):
         """
         js: joint positions in rad along the path. 
         j0: start joint positions, defaults to the current simulation joint positions.
@@ -99,7 +101,7 @@ class Motion_Visualization():
 
         js_rs = np.hstack([js[:-1], js[1:]]).reshape((int(js.shape[0]-1/2),2,js.shape[1]))
         for j0, j1 in js_rs:
-            self.move(j1, j0, duration=duration_section, init = False)
+            self.move(j1, j0, duration=duration_section, init = False, degree=degree)
 
     
     
