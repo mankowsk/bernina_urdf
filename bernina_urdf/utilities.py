@@ -57,11 +57,14 @@ class Motion_Visualization():
             self._swift_id = self.vis.add(self.robot)
     
     def _ensure_vis_running(self):
-        if not hasattr(self.vis, "server"):
+        if not self._vis_running():
             self.show()
+
+    def _vis_running(self):
+        return True if hasattr(self.vis, "server") else False
     
     def show(self, camera_view=0, *args, **kwargs):
-        if hasattr(self.vis, "server"):
+        if self._vis_running():
             self.vis.reset()
         else:
             self.vis.launch(realtime=True, *args, **kwargs)
@@ -81,9 +84,11 @@ class Motion_Visualization():
         """
         self._ensure_vis_running()
         self._add_self_to_vis()
-
+         #Start position
         if j0 is None:
-            j0 = self.pos #Start position
+            j0 = self.pos
+        else:
+            self.pos = j0
         if init:
             self.vis.step(0) #Initialize visualization
         j0, j1 = np.asarray(j0), np.asarray(j1)
@@ -113,7 +118,7 @@ class Motion_Visualization():
 
         js_rs = np.hstack([js[:-1], js[1:]]).reshape((int(js.shape[0]-1/2),2,js.shape[1]))
         for j0, j1 in js_rs:
-            self.move(j1, j0, duration=duration_section, init = False)
+            self.move(j1, j0=j0, duration=duration_section, init = False)
 
     
     
