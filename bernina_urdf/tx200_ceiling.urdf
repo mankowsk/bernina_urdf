@@ -84,9 +84,9 @@
   </link>
   <link name="detector">
     <visual>
-      <origin rpy="0 3.141592653589793 0" xyz="0.25 0 2.392"/>
+      <origin rpy="0 3.141592653589793 0" xyz="0. -.08 0.24"/>
       <geometry>
-        <box size= "0.3 0.15 0.11"/>
+        <mesh filename= "meshes/staeubli_tx200/visual/detector_1.5M.dae"/>
       </geometry>
       <material name="">
         <color rgba="0.829411764706 0.821568627451 0.805882352941 1.0"/>
@@ -144,7 +144,7 @@
   <joint name="joint_6-detetcor" type="fixed">
     <parent link="link_6"/>
     <child link="detector"/>
-    <origin rpy="0 3.141592653589793 0" xyz=".25 0 2.15"/>
+    <origin rpy="0 0. 0" xyz=".25 0 2.15"/>
   </joint>
 </robot>
 
