@@ -5,6 +5,28 @@
   <!-- RAL 9016 -->
   <!-- RAL 7043 -->
   <!-- links -->
+  <link name="rail">
+    <visual>
+      <origin rpy="0 3.141592653589793 0" xyz="0 0 3.920"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/rail.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="linear_axis">
+    <visual>
+      <origin rpy="0 3.141592653589793 0" xyz="0 0 3.920"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
   <link name="base_link">
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0 0 3.920"/>
@@ -82,9 +104,20 @@
       </material>
     </visual>
   </link>
+  <link name="adapter">
+    <visual>
+      <origin rpy="0 3.141592653589793 0" xyz="0. 0 0.24"/>
+      <geometry>
+        <mesh filename= "meshes/staeubli_tx200/visual/tool_adapter_plate.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.829411764706 0.821568627451 0.805882352941 1.0"/>
+      </material>
+    </visual>
+  </link>
   <link name="detector">
     <visual>
-      <origin rpy="0 3.141592653589793 0" xyz="0. -.08 0.24"/>
+      <origin rpy="0 3.141592653589793 0" xyz="0. 0. 0.24"/>
       <geometry>
         <mesh filename= "meshes/staeubli_tx200/visual/detector_1.5M.dae"/>
       </geometry>
@@ -92,7 +125,19 @@
         <color rgba="0.829411764706 0.821568627451 0.805882352941 1.0"/>
       </material>
     </visual>
-  </link>  <!-- joints -->
+  </link>
+  <joint name="rail-linear" type="prismatic">
+    <parent link="rail"/>
+    <child link="linear_axis"/>
+    <origin rpy="0 0. 0" xyz=".0 0 0."/>
+    <axis xyz="1 0 0"/>
+    <limit effort="692.0" lower="-2." upper="2." velocity="2."/>
+  </joint>
+  <joint name="linear_axis-base_link" type="fixed">
+    <parent link="linear_axis"/>
+    <child link="base_link"/>
+    <origin rpy="0 0. 0" xyz=".0 0 0."/>
+  </joint>
   <joint name="joint_1" type="revolute">
     <origin rpy="0 0 0" xyz="0 0 3.920"/>
     <parent link="base_link"/>
@@ -141,10 +186,15 @@
     <limit effort="29.0" lower="-4.71" upper="4.71" velocity="7.68"/>
     <dynamics damping="0.0" friction="0.0"/>
   </joint>
-  <joint name="joint_6-detetcor" type="fixed">
+  <joint name="joint_6-adapter" type="fixed">
     <parent link="link_6"/>
+    <child link="adapter"/>
+    <origin rpy="0 0. 0" xyz="0.25 0.0 2.15"/>
+  </joint>
+  <joint name="adapter-detetcor" type="fixed">
+    <parent link="adapter"/>
     <child link="detector"/>
-    <origin rpy="0 0. 0" xyz=".25 0 2.15"/>
+    <origin rpy="0 0. 0" xyz=".0 0 0."/>
   </joint>
 </robot>
 
