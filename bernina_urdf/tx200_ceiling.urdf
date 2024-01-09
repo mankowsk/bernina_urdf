@@ -126,6 +126,17 @@
       </material>
     </visual>
   </link>
+  <link name="modules">
+    <visual>
+      <origin rpy="0 3.141592653589793 0" xyz="0. 0. 0.24"/>
+      <geometry>
+        <mesh filename= "meshes/staeubli_tx200/visual/detector_1.5M_modules.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="0.829411764706 0.821568627451 0.805882352941 1.0"/>
+      </material>
+    </visual>
+  </link>
   <joint name="rail-linear" type="prismatic">
     <parent link="rail"/>
     <child link="linear_axis"/>
@@ -194,6 +205,11 @@
   <joint name="adapter-detetcor" type="fixed">
     <parent link="adapter"/>
     <child link="detector"/>
+    <origin rpy="0 0. 0" xyz=".0 0 0."/>
+  </joint>
+  <joint name="detetcor-modules" type="fixed">
+    <parent link="detector"/>
+    <child link="modules"/>
     <origin rpy="0 0. 0" xyz=".0 0 0."/>
   </joint>
 </robot>
