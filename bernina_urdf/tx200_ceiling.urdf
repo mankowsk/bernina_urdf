@@ -129,14 +129,14 @@
   <joint name="rail-linear" type="prismatic">
     <parent link="rail"/>
     <child link="linear_axis"/>
-    <origin rpy="0 0. 0" xyz=".0 0 0."/>
+    <origin rpy="0 0. 0" xyz="-2.125 0 0."/>
     <axis xyz="1 0 0"/>
-    <limit effort="692.0" lower="-2." upper="2." velocity="2."/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
   </joint>
   <joint name="linear_axis-base_link" type="fixed">
     <parent link="linear_axis"/>
     <child link="base_link"/>
-    <origin rpy="0 0. 0" xyz=".0 0 0."/>
+    <origin rpy="0 0. 3.141592653589793" xyz=".0 0 0."/>
   </joint>
   <joint name="joint_1" type="revolute">
     <origin rpy="0 0 0" xyz="0 0 3.920"/>

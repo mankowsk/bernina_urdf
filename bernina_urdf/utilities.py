@@ -1,6 +1,12 @@
 from swift import Swift
 import numpy as np
 
+from spatialmath.base.argcheck import (
+    getvector,
+    getmatrix,
+    verifymatrix,
+)
+
 class Joint():
     def __init__(
         self,
@@ -40,10 +46,10 @@ class Motion_Visualization():
                     self.__dict__[link.name] = Joint(link.name, self, link.jindex)
     @property
     def pos(self):
-        return self.robot.todegrees(self.robot.q)
+        return self.robot.todegrees(self.robot.tomillimeter(self.robot.q))
     @pos.setter
     def pos(self, value):
-        self.robot.q = self.robot.toradians(value)
+        self.robot.q = self.robot.toradians(self.robot.tometer(value))
 
     @property
     def velocity(self):
@@ -108,10 +114,10 @@ class Motion_Visualization():
         js = np.asarray(js)
         if start_at_current_value:
             js = np.vstack([self.pos, js]) #Start position
-        
+
         if init:
             self.vis.step(0) #Initialize visualization
-        
+
         duration_section = duration / (len(js)-1)
         if duration_section < 0.05:
             duration_section = 0.05
@@ -120,5 +126,72 @@ class Motion_Visualization():
         for j0, j1 in js_rs:
             self.move(j1, j0=j0, duration=duration_section, init = False)
 
-    
-    
+def conversions(Robot):
+    def tomillimeter(self, q):
+        """
+        Convert prismatic joint units to mm
+
+        Parameters
+        ----------
+        q
+            The joint configuration of the robot
+
+        Returns
+        -------
+        q
+            a vector of joint coordinates in metres
+
+        ``robot.tomillimeter(q)`` converts joint coordinates ``q`` to mm
+        taking into account whether elements of ``q`` correspond to revolute
+        or prismatic joints, ie. revolute joint values are not converted.
+
+        If ``q`` is a matrix, with one column per joint, the conversion is
+        performed columnwise.
+        """
+        q = getmatrix(q, (None, self.n))
+
+        for j, prismatic in enumerate(self.prismaticjoints):
+            if prismatic:
+                q[:, j] *= 1e3
+
+        if q.shape[0] == 1:
+            return q[0]
+        else:
+            return q
+
+    def tometer(self, q):
+        """
+        Convert prismatic joint units to m
+
+        Parameters
+        ----------
+        q
+            The joint configuration of the robot
+
+        Returns
+        -------
+        q
+            a vector of joint coordinates in metres
+
+        ``robot.tometer(q)`` converts joint coordinates ``q`` to m
+        taking into account whether elements of ``q`` correspond to revolute
+        or prismatic joints, ie. revolute joint values are not converted.
+
+        If ``q`` is a matrix, with one column per joint, the conversion is
+        performed columnwise.
+        """
+
+        q = getmatrix(q, (None, self.n))
+
+        for j, prismatic in enumerate(self.prismaticjoints):
+            if prismatic:
+                q[:, j] *= 1e-3
+
+        if q.shape[0] == 1:
+            return q[0]
+        else:
+            return q
+
+    Robot.tomillimeter = tomillimeter
+    Robot.tometer = tometer
+    return Robot

@@ -1,9 +1,9 @@
 from roboticstoolbox import Robot
-from .utilities import Motion_Visualization
+from .utilities import Motion_Visualization, conversions
 from pathlib import Path
 basepath = Path(__file__).parent
 
-
+@conversions
 class Tx200_Ceiling(Robot):
     def __init__(
         self, 
@@ -32,6 +32,7 @@ class Tx200_Ceiling(Robot):
             links = self.links
             )
 
+@conversions
 class Tx200_Floor(Robot):
     def __init__(
             self,
