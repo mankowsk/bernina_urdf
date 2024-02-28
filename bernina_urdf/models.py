@@ -1,5 +1,10 @@
 from roboticstoolbox import Robot
 from .utilities import Motion_Visualization, conversions
+try:
+    import matplotlib
+    matplotlib.rcdefaults()
+except:
+    pass
 from pathlib import Path
 basepath = Path(__file__).parent
 
