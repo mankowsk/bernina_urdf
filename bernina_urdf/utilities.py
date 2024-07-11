@@ -17,7 +17,7 @@ class Joint():
         self.name = name
         self.sim = sim
         self.jindex = jindex
-        
+
     def mv(self, value, duration=10):
         j1 = self.sim.pos.copy()
         j1[self.jindex] = value
@@ -43,7 +43,8 @@ class Motion_Visualization():
         if links is not None:
             for link in links:
                 if link.hasdynamics:
-                    self.__dict__[link.name] = Joint(link.name, self, link.jindex@property
+                    self.__dict__[link.name] = Joint(link.name, self, link.jindex)
+    @property
     def pos(self):
         return self.robot.todegrees(self.robot.tomillimeter(self.robot.q))
     @pos.setter
