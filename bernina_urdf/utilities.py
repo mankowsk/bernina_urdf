@@ -43,8 +43,7 @@ class Motion_Visualization():
         if links is not None:
             for link in links:
                 if link.hasdynamics:
-                    self.__dict__[link.name] = Joint(link.name, self, link.jindex)
-    @property
+                    self.__dict__[link.name] = Joint(link.name, self, link.jindex@property
     def pos(self):
         return self.robot.todegrees(self.robot.tomillimeter(self.robot.q))
     @pos.setter

@@ -31,7 +31,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0 0 3.920"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/base_link.dae"/>
+        <mesh filename="meshes/staeubli_tx200/visual/base_link.stl"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -42,7 +42,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/link_1.dae"/>
+        <mesh filename="meshes/staeubli_tx200/visual/link_1.stl"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -53,7 +53,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0.25 0 0.642"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/link_2.dae"/>
+        <mesh filename="meshes/staeubli_tx200/visual/link_2.stl"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -64,7 +64,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0.25 0 1.592"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/link_3.dae"/>
+        <mesh filename="meshes/staeubli_tx200/visual/link_3.stl"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -75,7 +75,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0.25 0 1.592"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/link_4.dae"/>
+        <mesh filename="meshes/staeubli_tx200/visual/link_4.stl"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -86,7 +86,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0.25 0 2.392"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/link_5.dae"/>
+        <mesh filename="meshes/staeubli_tx200/visual/link_5.stl"/>
       </geometry>
       <material name="">
         <color rgba="0.529411764706 0.521568627451 0.505882352941 1.0"/>
@@ -97,7 +97,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0.25 0 2.392"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/link_6.dae"/>
+        <mesh filename="meshes/staeubli_tx200/visual/link_6.stl"/>
       </geometry>
       <material name="">
         <color rgba="0.529411764706 0.521568627451 0.505882352941 1.0"/>
