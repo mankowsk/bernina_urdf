@@ -108,7 +108,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0. 0 0.24"/>
       <geometry>
-        <mesh filename= "meshes/staeubli_tx200/visual/tool_adapter_plate.dae"/>
+        <mesh filename= "meshes/staeubli_tx200/visual/tool_adapter_plate_col.dae"/>
       </geometry>
       <material name="">
         <color rgba="0.829411764706 0.821568627451 0.805882352941 1.0"/>
@@ -119,7 +119,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0. 0. 0.24"/>
       <geometry>
-        <mesh filename= "meshes/staeubli_tx200/visual/detector_1.5M.dae"/>
+        <mesh filename= "meshes/staeubli_tx200/visual/detector_1.5M_90.dae"/>
       </geometry>
       <material name="">
         <color rgba="0.829411764706 0.821568627451 0.805882352941 1.0"/>
@@ -130,7 +130,7 @@
     <visual>
       <origin rpy="0 3.141592653589793 0" xyz="0. 0. 0.24"/>
       <geometry>
-        <mesh filename= "meshes/staeubli_tx200/visual/detector_1.5M_modules.dae"/>
+        <mesh filename= "meshes/staeubli_tx200/visual/detector_1.5M_modules_90.dae"/>
       </geometry>
       <material name="">
         <color rgba="0.829411764706 0.821568627451 0.805882352941 1.0"/>
