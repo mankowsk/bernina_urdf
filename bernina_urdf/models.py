@@ -11,12 +11,16 @@ basepath = Path(__file__).parent
 @conversions
 class Tx200_Ceiling(Robot):
     def __init__(
-        self, 
+        self,
         vis=None,
+        jf_id = None,
         ):
-
+        if "07" in jf_id:
+            jf_id = "_16M"
+        else:
+            jf_id = ""
         links, name, urdf_string, urdf_filepath = self.URDF_read(
-            basepath.joinpath("tx200_ceiling.urdf"),
+            basepath.joinpath(f"tx200_ceiling{jf_id}.urdf"),
             tld = basepath.as_posix(),
             )
 
@@ -27,7 +31,7 @@ class Tx200_Ceiling(Robot):
             urdf_string=urdf_string,
             urdf_filepath=None,
             )
-        
+
         self.sim = Motion_Visualization(
             vis = vis,
             robot = self,
@@ -47,7 +51,7 @@ class Tx200_Floor(Robot):
             basepath.joinpath("tx200_floor.urdf"),
             tld = basepath.as_posix(),
             )
-                
+
         super().__init__(
             links,
             name=name,
