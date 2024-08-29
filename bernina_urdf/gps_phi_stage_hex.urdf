@@ -1,0 +1,146 @@
+<?xml version="1.0" ?>
+<robot name="general purpose station" xmlns:xacro="http://ros.org/wiki/xacro">
+  <!-- RAL 1028 -->
+  <!-- RAL 1018 -->
+  <!-- RAL 9016 -->
+  <!-- RAL 7043 -->
+  <!-- links -->
+  <link name="base">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/rail.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="xbase">
+  </link>
+  <link name="ybase">
+  </link>
+  <link name="platform">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="tth_arm">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="th_arm">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="eta_stage">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="hexapod">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <link name="thc">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+
+  <joint name="xbase" type="prismatic">
+    <parent link="base"/>
+    <child link="xbase"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="1 0 0"/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+  </joint>
+  <joint name="ybase" type="prismatic">
+    <parent link="xbase"/>
+    <child link="ybase"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="0 0 1"/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+  </joint>
+  <joint name="rzbase" type="revolute">
+    <parent link="ybase"/>
+    <child link="platform"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="0 1 0"/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+  </joint>
+  <joint name="nu" type="revolute">
+    <parent link="platform"/>
+    <child link="tth_arm"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="0 0 1"/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+  </joint>
+  <joint name="mu" type="revolute">
+    <parent link="platform"/>
+    <child link="th_arm"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="0 0 1"/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+  </joint>
+  <joint name="transl_eta" type="prismatic">
+    <parent link="th_arm"/>
+    <child link="eta_stage"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="0 1 0"/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+  </joint>
+  <joint name="eta" type="revolute">
+    <parent link="eta_stage"/>
+    <child link="hexapod"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="0 1 0"/>
+    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+  </joint>
+  <joint name="thc" type="fixed">
+    <parent link="tth_arm"/>
+    <child link="thc"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+  </joint>
+</robot>
+
