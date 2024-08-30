@@ -9,7 +9,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/rail.dae"/>
+        <mesh filename="meshes/gps/base.dae"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -24,7 +24,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+        <mesh filename="meshes/gps/platform.dae"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -35,7 +35,29 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+        <mesh filename="meshes/gps/ttheta_arm.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="bridge">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/gps/bridge.dae"/>
+      </geometry>
+      <material name="">
+        <color rgba="1.0 0.607843137255 0.0 1.0"/>
+      </material>
+    </visual>
+  </link>
+  <link name="chamber">
+    <visual>
+      <origin rpy="0 0 0" xyz="0 0 0"/>
+      <geometry>
+        <mesh filename="meshes/gps/chamber.dae"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -46,7 +68,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+        <mesh filename="meshes/gps/theta_arm.dae"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -57,7 +79,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+        <mesh filename="meshes/gps/transl_eta.dae"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -68,19 +90,7 @@
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
-      </geometry>
-      <material name="">
-        <color rgba="1.0 0.607843137255 0.0 1.0"/>
-      </material>
-    </visual>
-  </link>
-
-  <link name="thc">
-    <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
-      <geometry>
-        <mesh filename="meshes/staeubli_tx200/visual/linear_axis.dae"/>
+        <mesh filename="meshes/gps/hexapod.dae"/>
       </geometry>
       <material name="">
         <color rgba="1.0 0.607843137255 0.0 1.0"/>
@@ -92,7 +102,7 @@
     <parent link="base"/>
     <child link="xbase"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
-    <axis xyz="1 0 0"/>
+    <axis xyz="0 1 0"/>
     <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
   </joint>
   <joint name="ybase" type="prismatic">
@@ -102,45 +112,50 @@
     <axis xyz="0 0 1"/>
     <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
   </joint>
-  <joint name="rzbase" type="revolute">
+  <joint name="rxbase" type="revolute">
     <parent link="ybase"/>
     <child link="platform"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 1 0"/>
-    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+    <limit effort="692.0" lower="-1" upper="1." velocity="2."/>
   </joint>
   <joint name="nu" type="revolute">
     <parent link="platform"/>
     <child link="tth_arm"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 0 1"/>
-    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+    <limit effort="692.0" lower="-3.14" upper="3.14" velocity="2."/>
+  </joint>
+  <joint name="bridge" type="fixed">
+    <parent link="tth_arm"/>
+    <child link="bridge"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
+  </joint>
+  <joint name="yhl" type="fixed">
+    <parent link="bridge"/>
+    <child link="chamber"/>
+    <origin rpy="0 0. 0" xyz="0 0 0."/>
   </joint>
   <joint name="mu" type="revolute">
     <parent link="platform"/>
     <child link="th_arm"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 0 1"/>
-    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+    <limit effort="692.0" lower="-3.14" upper="3.14" velocity="2."/>
   </joint>
   <joint name="transl_eta" type="prismatic">
     <parent link="th_arm"/>
     <child link="eta_stage"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 1 0"/>
-    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
+    <limit effort="692.0" lower="-0.1" upper="4." velocity="2."/>
   </joint>
-  <joint name="eta" type="revolute">
+    <joint name="eta" type="revolute">
     <parent link="eta_stage"/>
     <child link="hexapod"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
-    <axis xyz="0 1 0"/>
-    <limit effort="692.0" lower="-0.2" upper="4." velocity="2."/>
-  </joint>
-  <joint name="thc" type="fixed">
-    <parent link="tth_arm"/>
-    <child link="thc"/>
-    <origin rpy="0 0. 0" xyz="0 0 0."/>
+    <axis xyz="0 -1 0"/>
+    <limit effort="692.0" lower="-10." upper="10." velocity="2."/>
   </joint>
 </robot>
 
