@@ -20,7 +20,7 @@
   </link>
   <link name="ybase">
   </link>
-  <link name="platform">
+  <link name="rxbase">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -31,7 +31,7 @@
       </material>
     </visual>
   </link>
-  <link name="tth_arm">
+  <link name="gamma">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -64,7 +64,7 @@
       </material>
     </visual>
   </link>
-  <link name="th_arm">
+  <link name="mu">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -75,7 +75,7 @@
       </material>
     </visual>
   </link>
-  <link name="eta_stage">
+  <link name="transl_eta">
     <visual>
       <origin rpy="0 0 0" xyz="0 0 0"/>
       <geometry>
@@ -86,9 +86,9 @@
       </material>
     </visual>
   </link>
-  <link name="hexapod">
+  <link name="eta">
     <visual>
-      <origin rpy="0 0 0" xyz="0 0 0"/>
+	    <origin rpy="0 0 0" xyz="0 0 -1.42"/>
       <geometry>
         <mesh filename="meshes/gps/hexapod.dae"/>
       </geometry>
@@ -114,20 +114,20 @@
   </joint>
   <joint name="rxbase" type="revolute">
     <parent link="ybase"/>
-    <child link="platform"/>
+    <child link="rxbase"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 1 0"/>
     <limit effort="692.0" lower="-1" upper="1." velocity="2."/>
   </joint>
-  <joint name="nu" type="revolute">
-    <parent link="platform"/>
-    <child link="tth_arm"/>
+  <joint name="gamma" type="revolute">
+    <parent link="rxbase"/>
+    <child link="gamma"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 0 1"/>
     <limit effort="692.0" lower="-3.14" upper="3.14" velocity="2."/>
   </joint>
   <joint name="bridge" type="fixed">
-    <parent link="tth_arm"/>
+    <parent link="gamma"/>
     <child link="bridge"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
   </joint>
@@ -137,23 +137,23 @@
     <origin rpy="0 0. 0" xyz="0 0 0."/>
   </joint>
   <joint name="mu" type="revolute">
-    <parent link="platform"/>
-    <child link="th_arm"/>
+    <parent link="rxbase"/>
+    <child link="mu"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 0 1"/>
     <limit effort="692.0" lower="-3.14" upper="3.14" velocity="2."/>
   </joint>
   <joint name="transl_eta" type="prismatic">
-    <parent link="th_arm"/>
-    <child link="eta_stage"/>
+    <parent link="mu"/>
+    <child link="transl_eta"/>
     <origin rpy="0 0. 0" xyz="0 0 0."/>
     <axis xyz="0 1 0"/>
     <limit effort="692.0" lower="-0.1" upper="4." velocity="2."/>
   </joint>
     <joint name="eta" type="revolute">
-    <parent link="eta_stage"/>
-    <child link="hexapod"/>
-    <origin rpy="0 0. 0" xyz="0 0 0.68"/>
+    <parent link="transl_eta"/>
+    <child link="eta"/>
+    <origin rpy="0 0. 0" xyz="0 0 1.42"/>
     <axis xyz="0 -1 0"/>
     <limit effort="692.0" lower="-10." upper="10." velocity="2."/>
   </joint>
