@@ -46,12 +46,7 @@ class GPS(Robot):
     def __init__(
         self,
         vis=None,
-        jf_id = "",
         ):
-        if "07" in jf_id:
-            jf_id = "_16M"
-        else:
-            jf_id = ""
         links, name, urdf_string, urdf_filepath = self.URDF_read(
             basepath.joinpath(f"gps_phi_stage_hex.urdf"),
             tld = basepath.as_posix(),
@@ -60,7 +55,7 @@ class GPS(Robot):
         super().__init__(
             links,
             name=name,
-            manufacturer="Staeubli",
+            manufacturer="Huber",
             urdf_string=urdf_string,
             urdf_filepath=None,
             )
